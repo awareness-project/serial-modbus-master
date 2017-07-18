@@ -1,0 +1,79 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "serial-modbus-master@*",
+        "scope": null,
+        "escapedName": "serial-modbus-master",
+        "name": "serial-modbus-master",
+        "rawSpec": "*",
+        "spec": "*",
+        "type": "range"
+      },
+      "C:\\Project\\WebStorm\\awareness-sample\\node_modules\\awareness"
+    ]
+  ],
+  "_from": "serial-modbus-master@*",
+  "_id": "serial-modbus-master@0.0.23",
+  "_inCache": true,
+  "_location": "/serial-modbus-master",
+  "_nodeVersion": "6.9.4",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/serial-modbus-master-0.0.23.tgz_1488449290472_0.3416299584787339"
+  },
+  "_npmUser": {
+    "name": "kulikovv",
+    "email": "kulikovv@list.ru"
+  },
+  "_npmVersion": "3.10.10",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "serial-modbus-master@*",
+    "scope": null,
+    "escapedName": "serial-modbus-master",
+    "name": "serial-modbus-master",
+    "rawSpec": "*",
+    "spec": "*",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/awareness"
+  ],
+  "_resolved": "https://registry.npmjs.org/serial-modbus-master/-/serial-modbus-master-0.0.23.tgz",
+  "_shasum": "6f11d9234414bd31292f2f75d3ddec0c08658391",
+  "_shrinkwrap": null,
+  "_spec": "serial-modbus-master@*",
+  "_where": "C:\\Project\\WebStorm\\awareness-sample\\node_modules\\awareness",
+  "author": {
+    "name": "Victor Kulikov"
+  },
+  "dependencies": {},
+  "description": "Implementation of modbus master functionality for node.js",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "6f11d9234414bd31292f2f75d3ddec0c08658391",
+    "tarball": "https://registry.npmjs.org/serial-modbus-master/-/serial-modbus-master-0.0.23.tgz"
+  },
+  "keywords": [
+    "serial",
+    "modbus",
+    "master"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "kulikovv",
+      "email": "kulikovv@list.ru"
+    }
+  ],
+  "name": "serial-modbus-master",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.23"
+}
