@@ -47,6 +47,8 @@ SerialModbusMaster.prototype.readHoldings = function(slave, register, schema, ca
                 count += record.count; //
                 break;
             case 'F'://Float
+            case 'DW'://Double word
+            case 'DI'://Double int
                 count += 2 * record.count; //
                 break;
             default:
@@ -85,6 +87,8 @@ SerialModbusMaster.prototype.writeHoldings = function(slave, register, schema, d
                 count += record.count; //
                 break;
             case 'F'://Float
+            case 'DW'://Double word
+            case 'DI'://Double int
                 count += 2 * record.count; //
                 break;
             default:
@@ -134,6 +138,16 @@ SerialModbusMaster.prototype.writeHoldings = function(slave, register, schema, d
                 break;
             case 'F'://Float
                 buf.writeFloatBE(data[dataNum], dataPos);
+                dataPos += 4;
+                dataNum ++;
+                break;
+            case 'DW'://Double Word
+                buf.writeUInt32BE(data[dataNum], dataPos);
+                dataPos += 4;
+                dataNum ++;
+                break;
+            case 'DI'://Double Int
+                buf.writeInt32BE(data[dataNum], dataPos);
                 dataPos += 4;
                 dataNum ++;
                 break;
@@ -254,6 +268,14 @@ function parseResponse(context) {
                                 break;
                             case 'F'://Float
                                 data.push(context.receiveBuffer.readFloatBE(dataPos));
+                                dataPos += 4;
+                                break;
+                            case 'DW'://Double Word
+                                data.push(context.receiveBuffer.readUInt32BE(dataPos));
+                                dataPos += 4;
+                                break;
+                            case 'DI'://Double Int
+                                data.push(context.receiveBuffer.readInt32BE(dataPos));
                                 dataPos += 4;
                                 break;
                             default:
