@@ -138,16 +138,19 @@ SerialModbusMaster.prototype.writeHoldings = function(slave, register, schema, d
                 break;
             case 'F'://Float
                 buf.writeFloatBE(data[dataNum], dataPos);
+                if(schemaItem.swapWords) swapWords(buf, dataPos);
                 dataPos += 4;
                 dataNum ++;
                 break;
             case 'DW'://Double Word
                 buf.writeUInt32BE(data[dataNum], dataPos);
+                if(schemaItem.swapWords) swapWords(buf, dataPos);
                 dataPos += 4;
                 dataNum ++;
                 break;
             case 'DI'://Double Int
                 buf.writeInt32BE(data[dataNum], dataPos);
+                if(schemaItem.swapWords) swapWords(buf, dataPos);
                 dataPos += 4;
                 dataNum ++;
                 break;
@@ -267,14 +270,17 @@ function parseResponse(context) {
                                 dataPos += 2;
                                 break;
                             case 'F'://Float
+                                if(schemaItem.swapWords) swapWords(context.receiveBuffer, dataPos);
                                 data.push(context.receiveBuffer.readFloatBE(dataPos));
                                 dataPos += 4;
                                 break;
                             case 'DW'://Double Word
+                                if(schemaItem.swapWords) swapWords(context.receiveBuffer, dataPos);
                                 data.push(context.receiveBuffer.readUInt32BE(dataPos));
                                 dataPos += 4;
                                 break;
                             case 'DI'://Double Int
+                                if(schemaItem.swapWords) swapWords(context.receiveBuffer, dataPos);
                                 data.push(context.receiveBuffer.readInt32BE(dataPos));
                                 dataPos += 4;
                                 break;
@@ -428,4 +434,14 @@ function crc16(prevCRC, bytes, length){
     }
 
     return crc;
+}
+
+
+function swapWords(buf, pos) {
+    const i1 = buf[pos];
+    const i2 = buf[pos + 1];
+    buf[pos] = buf[pos + 2];
+    buf[pos + 1] = buf[pos + 3];
+    buf[pos + 2] = i1;
+    buf[pos + 3] = i2;
 }
