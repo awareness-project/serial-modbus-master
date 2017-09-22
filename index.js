@@ -177,6 +177,26 @@ SerialModbusMaster.prototype.writeHoldings = function(slave, register, schema, d
     });
 };
 
+SerialModbusMaster.prototype.readCoils = function(slave, register, count, callback, inputs) {  //if inputs === true, read inputs instead of coils
+    var context = this;
+    var buf = new Buffer([0x00,(inputs === true)?0x02:0x01,0x00,0x00,0x00,0x00,0xC5,0xD3]);
+
+    buf[0] = slave;
+    buf.writeUInt16BE(register, 2);
+    buf.writeUInt16BE(count, 4);
+    buf.writeUInt16LE(crc16(0xFFFF, buf, 6), 6);
+
+    context.requestsQueue.push({
+        slave:slave,
+        telegramm:buf,
+        expectedRespLen: 5 + Math.ceil(count / 8),
+        count:count,
+        attemptsLeft:context.requestAttempts,
+        callback:callback
+    });
+};
+
+
 SerialModbusMaster.prototype.go = function() {
     var context = this;
     setTimeout(function () {
@@ -297,6 +317,33 @@ function parseResponse(context) {
                     break;
                 case 16:
                     var data = [context.receiveBuffer.readUInt16BE(2), context.receiveBuffer.readUInt16BE(4)]; //1st element = address of the 1st register, 2nd = number of registers written
+                    break;
+                case 1:
+                case 2:
+                    var data = [];
+                    var dataCount = context.currentRequest.expectedRespLen - 2;
+                    var dataPos = 3;
+                    var coilPos = 0;
+                    var coilNum = context.currentRequest.count;
+                    var bitPos = 0;
+                    var byte;
+                    while ((dataPos < dataCount) && (coilPos < coilNum)) {
+                        if(bitPos) {
+                            byte >>>= byte;
+                        } else {
+                            byte = context.receiveBuffer[dataPos];
+                        }
+
+                        data.push(byte & 1);
+
+                        coilPos++;
+                        bitPos++;
+
+                        if(bitPos > 7){
+                            bitPos = 0;
+                            dataPos++;
+                        }
+                    }
                     break;
                 default:
                     var error = 'uncnown function code';
